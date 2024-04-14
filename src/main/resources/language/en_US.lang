@@ -1,0 +1,6 @@
+qiankunbag.event.item_count_need=§cYou need §l{%0}§r§c to synthesize, you are still missing §l{%1}§r§c.
+qiankunbag.event.upgrade_success=§aSynthesis successful!
+qiankunbag.event.item_not_found=§e§l{%0} §r§cconfiguration file is invalid.
+qiankunbag.event.item_not_upgrade=§l§fAlready at maximum level!
+
+qiankunbag.cannot.point=§cThe only recharge official website: {%0}

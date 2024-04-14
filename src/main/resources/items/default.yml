@@ -1,0 +1,20 @@
+showName: §r§c紫虚灵石
+label: 灵石
+level: 1
+namespace: minecraft:diamond
+attr:
+  PVE攻击力:
+    - 1
+message: |-
+  §7紫虚灵石§a[I级]
+  §f可放置于乾坤包袋内
+  §f增加自身属性的宝石
+  §f右键灵石可以合成
+show:
+  - §r§l§e—————§b◆ §3灵石属性 §b◆§e—————
+  - §r§6◈§7血量§6◈ §a{{血量值}}
+  - §r§6◈§7PVE攻击§6◈ §a{{PVE攻击力}}
+  - §r§6◈§7防御力§6◈ §a{{防御力}}
+  - §r§l§e—————§b◆ §3物品介绍 §b◆§e—————
+  - §r@message
+upgrade: 紫虚灵石2

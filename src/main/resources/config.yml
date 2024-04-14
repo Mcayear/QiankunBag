@@ -1,0 +1,23 @@
+default-slot: 4
+show-item:
+  enlarge:
+    id: "minecraft:glass"
+    name: §r§6[ 扩充乾坤袋 ]
+    aux: 0
+    count: 1
+    lore: |-
+      §r§l§e—————§b◆ §3详情介绍 §b◆§e—————
+      
+      §r§e解锁需要：§f点券 *§a{price}
+      
+      §l§f一一一一一一一一一一一一
+      §r§f点击解锁
+      §e! §c请勿重复解锁
+upgrade-need: 5
+price:
+  "1~9": 500
+  "10~18": 700
+  "19~27": 900
+  "28~36": 1100
+  "37~45": 1300
+  "46~54": 1500

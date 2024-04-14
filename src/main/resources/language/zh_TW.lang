@@ -1,0 +1,6 @@
+qiankunbag.event.item_count_need=§c需要 §l{%0} §r§c個才能合成，您還缺少 §l{%1} §r§c個。
+qiankunbag.event.upgrade_success=§a合成成功！
+qiankunbag.event.item_not_found=§e§l{%0} §r§c的配置文件無效。
+qiankunbag.event.item_not_upgrade=§l§f已經是最大等級了！
+
+qiankunbag.cannot.point=§c唯一赞助地址： {%0}
