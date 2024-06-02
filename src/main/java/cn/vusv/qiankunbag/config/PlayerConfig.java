@@ -23,8 +23,10 @@ import java.util.List;
 public class PlayerConfig {
     private Config config;
     private String name;
-    @Setter
-    private int slot;
+
+    /**
+     * 乾坤石的列表
+     */
     @Setter
     private ArrayList<Item> playerItems = new ArrayList<>();
     @Setter
@@ -48,11 +50,11 @@ public class PlayerConfig {
     public static PlayerConfig load(String name, Config cfg) {
         PlayerConfig playerData = new PlayerConfig(name, cfg);
         try {
-            playerData.slot = cfg.getInt("slot");
-            playerData.playerItems = new ArrayList<>(playerData.slot); // 若 slot 是 2，则ArrayList初始容量为 2
+            playerData.setSlot(Math.max(cfg.getInt("slot"), MainConfig.defaultSlot));
+            playerData.playerItems = new ArrayList<>(playerData.getSlot()); // 若 slot 是 2，则ArrayList初始容量为 2
 
             List<String> dataList = cfg.getStringList("data");
-            for (int i = 0; i < Math.min(playerData.slot, dataList.size()); i++) {
+            for (int i = 0; i < Math.min(playerData.getSlot(), dataList.size()); i++) {
                 String yamlName = dataList.get(i);
                 if (yamlName != null) {
                     playerData.playerItems.add(QiankunStoneConfig.getItem(yamlName, 1));
@@ -70,9 +72,8 @@ public class PlayerConfig {
     public static void existAndCreate(Player player) {
         if (!loadPlayers.containsKey(player.getName().toLowerCase())) {
             PlayerConfig cfg = new PlayerConfig(player.getName(), new Config(QiankunBagMain.getInstance().getDataFolder() + File.separator + "players" + File.separator + player.getName() + ".yml", Config.YAML));
-            cfg.config.set("slot", MainConfig.defaultSlot);
-            cfg.config.set("data", new ArrayList<String>());
-            cfg.config.save();
+            cfg.setSlot(MainConfig.defaultSlot);
+            cfg.save();
             loadPlayers.put(player.getName().toLowerCase(), cfg);
         }
     }
@@ -82,8 +83,16 @@ public class PlayerConfig {
         this.config = cfg;
     }
 
-    public boolean save() {
+    public int getSlot() {
+        return config.getInt("slot");
+    }
+
+    public void setSlot(int slot) {
         config.set("slot", slot);
+    }
+
+    public boolean save() {
+        config.set("slot", getSlot());
         ArrayList<String> saveItems = new ArrayList<>();
         playerItems.forEach(item -> {
             if (item.isNull() || !item.getNamedTag().contains("type")) {
