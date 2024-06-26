@@ -50,7 +50,6 @@ public class QiankunBagMain extends PluginBase {
         QiankunStoneConfig.init();
         PlayerConfig.init();
 
-        //this.getServer().getScheduler().scheduleRepeatingTask(new Comp(this),20*60);
         this.getServer().getPluginManager().registerEvents(new Events(),this);
     }
 

@@ -10,6 +10,7 @@ import lombok.Getter;
 
 import java.io.File;
 import java.util.List;
+import java.util.Map;
 
 import static cn.vusv.qiankunbag.QiankunBagMain.loadItems;
 
@@ -67,7 +68,7 @@ public class QiankunStoneConfig extends ItemAttr {
             itemData.show = cfg.getStringList("show");
             itemData.upgrade = cfg.getString("upgrade");
 
-            itemData.setItemAttrConfig(itemData.attr);
+            itemData.setItemAttrConfig((Map<String, Object>) itemData.attr);
         } catch (Exception e) {
             QiankunBagMain.getInstance().getLogger().error("加载物品 " + name + " 配置文件失败");
             return null;

@@ -6,10 +6,12 @@ import cn.nukkit.Server;
 import cn.nukkit.event.EventHandler;
 import cn.nukkit.event.Listener;
 import cn.nukkit.event.player.PlayerInteractEvent;
+import cn.nukkit.event.player.PlayerLocallyInitializedEvent;
 import cn.nukkit.event.player.PlayerPreLoginEvent;
 import cn.nukkit.inventory.PlayerInventory;
 import cn.nukkit.item.Item;
 import cn.nukkit.nbt.tag.CompoundTag;
+import cn.nukkit.scheduler.PluginTask;
 import cn.nukkit.scheduler.Task;
 import cn.vusv.qiankunbag.attrmanager.QianKunBagAttr;
 import cn.vusv.qiankunbag.config.MainConfig;
@@ -21,7 +23,7 @@ import static cn.vusv.qiankunbag.QiankunBagMain.loadPlayers;
 
 public class Events implements Listener {
     @EventHandler
-    public void interact(PlayerInteractEvent event){
+    public void interact(PlayerInteractEvent event) {
         Player player = event.getPlayer();
         Item item = event.getItem();
         if (event.getAction() == PlayerInteractEvent.Action.RIGHT_CLICK_AIR && QiankunStoneConfig.isQiankunStone(item)) {
@@ -44,16 +46,11 @@ public class Events implements Listener {
     }
 
     @EventHandler
-    public void joinEvent(PlayerPreLoginEvent event) {
+    public void joinEvent(PlayerLocallyInitializedEvent event) {
         Player player = event.getPlayer();
         PlayerConfig.existAndCreate(player);
         QianKunBagAttr.setPlayerAttr(player);
-        Server.getInstance().getScheduler().scheduleDelayedTask(new Task() {
-            @Override
-            public void onRun(int i) {
-                checkPlayerInventory(player);
-            }
-        }, 60);
+        checkPlayerInventory(player);
     }
 
     /**
@@ -78,6 +75,11 @@ public class Events implements Listener {
                 player.sendMessage(QiankunBagMain.getI18n().tr(player.getLanguageCode(), "qiankunbag.event.item_not_found"));
             }
         });
-        PlayerAttr.getPlayerAttr(player).setItemAttrConfig("乾坤宝袋", loadPlayers.get(player.getName().toLowerCase()).getAttr().myAttr.get("Main"));
+
+        if (loadPlayers.containsKey(player.getName().toLowerCase())) {
+            PlayerConfig playerConfig = loadPlayers.get(player.getName().toLowerCase());
+            playerConfig.updateAttr();
+            PlayerAttr.getPlayerAttr(player).setItemAttrConfig("乾坤宝袋", playerConfig.getAttr().myAttr.get("Main"));
+        }
     }
 }

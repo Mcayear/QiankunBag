@@ -1,6 +1,5 @@
 package cn.vusv.qiankunbag.config;
 
-import RcRPG.AttrManager.PlayerAttr;
 import cn.vusv.qiankunbag.Handle;
 import cn.nukkit.Player;
 import cn.nukkit.item.Item;
@@ -22,7 +21,7 @@ import java.util.List;
 @Getter
 public class PlayerConfig {
     private Config config;
-    private String name;
+    private final String name;
 
     /**
      * 乾坤石的列表
@@ -35,14 +34,11 @@ public class PlayerConfig {
     public static void init() {
         QiankunBagMain.getInstance().getLogger().info("开始读取玩家信息");
         for (String name : Handle.getDefaultFiles("players")) {
-            PlayerConfig cfg;
             try {
-                cfg = load(name.toLowerCase(), new Config(QiankunBagMain.getInstance().getDataFolder() + File.separator + "players" + File.separator + name + ".yml", Config.YAML));
+                PlayerConfig cfg = load(name.toLowerCase(), new Config(QiankunBagMain.getInstance().getDataFolder() + File.separator + "players" + File.separator + name + ".yml", Config.YAML));
+                loadPlayers.put(name.toLowerCase(), cfg);
             } catch (Exception e) {
                 throw new RuntimeException(e);
-            }
-            if (cfg != null) {
-                loadPlayers.put(name.toLowerCase(), cfg);
             }
         }
     }
@@ -91,8 +87,16 @@ public class PlayerConfig {
         config.set("slot", slot);
     }
 
-    public boolean save() {
-        config.set("slot", getSlot());
+    /**
+     * 更新物品属性。
+     *
+     * 此方法遍历玩家的物品集合，对每个物品进行属性检查和更新。如果物品不存在或没有"类型"标签，则将其记录为null
+     *
+     * 并为该位置的物品初始化一个空的属性配置。如果物品存在且有"类型"标签，则根据其类型名称更新或初始化其属性配置。
+     *
+     * @return ArrayList<String> 包含所有物品的类型名称（或null），按照遍历的顺序排列。
+     */
+        public ArrayList<String> updateAttr() {
         ArrayList<String> saveItems = new ArrayList<>();
         playerItems.forEach(item -> {
             if (item.isNull() || !item.getNamedTag().contains("type")) {
@@ -106,8 +110,13 @@ public class PlayerConfig {
                 getAttr().setItemAttrConfig("slot" + saveItems.size(), loadItems.get(yamlName).getAttr());
             }
         });
+        return saveItems;
+    }
 
-        config.set("data", saveItems);
+    public boolean save() {
+        config.set("slot", getSlot());
+
+        config.set("data", updateAttr());
         return config.save();
     }
 }

@@ -1,15 +1,9 @@
 package cn.vusv.qiankunbag.task;
 
-import RcRPG.AttrManager.PlayerAttr;
-import cn.nukkit.Server;
-import cn.nukkit.lang.LangCode;
 import cn.nukkit.scheduler.PluginTask;
 import cn.vusv.qiankunbag.QiankunBagMain;
 
-import java.util.HashMap;
-import java.util.List;
-
-public class Comp extends PluginTask {
+public class Comp extends PluginTask<QiankunBagMain> {
 
     public Comp(QiankunBagMain main) {
         super(main);
